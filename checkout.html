@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+h1, h3 {
+    color: #333;
+}
+
+h2 {
+    color: #FF5722;
+}
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Textarea Style for Address */
+textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+textarea:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+#checkout-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+#checkout-form input, #checkout-form textarea {
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+#checkout-form input:focus, #checkout-form textarea:focus {
+    transform: scale(1.05);
+}
+#confirm-order {
+    background-color: #FF5722;
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#confirm-order:hover {
+    background-color: #f44336;
+    transform: scale(1.1);
+}
+        .checkout-container {
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        width: 90%;
+        max-width: 600px;
+        margin: 20px auto;
+        max-height: 600px ;
+
+    }
+    
+    #checkout-form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    #confirm-order {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    
+    #confirm-order:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }
+    .content-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#checkout-form {
+    flex: 1;
+}
+
+.address-image {
+    width: 270px; 
+    height: auto;
+    border-radius: 8px;
+}
+#checkout-form {
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="checkout-container">
+        <h1>Confirm Your Address</h1>
+        <div class="content-wrapper">
+            <form id="checkout-form">
+                <label for="address">Address:</label>
+                <textarea id="address" required placeholder="Enter your delivery address"></textarea>
+                <button type="submit" id="confirm-order">Confirm Order</button>
+            </form>
+            <img src="ADRESS.png" alt="Address Illustration" class="address-image">
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById("checkout-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const address = document.getElementById("address").value;
+
+    if (!address) {
+        alert("Please enter your address.");
+    } else {
+        const orderDetails = {
+            cart: JSON.parse(localStorage.getItem("cart")),
+            address: address
+        };
+        localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
+
+        window.location.href = "confirmation.html"; // Redirect to confirmation page
+    }
+});
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+h1, h3 {
+    color: #333;
+}
+
+h2 {
+    color: #FF5722;
+}
+
+.confirmation-container {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px;
+    margin: 40px auto;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.order-summary-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap; /* Ensures the content stacks on small screens */
+}
+
+.order-summary-left {
+    width: 60%;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background-color: #fff;
+}
+
+.order-summary-left h3 {
+    color: #4CAF50;
+}
+
+.order-summary-left p {
+    color: #333;
+}
+
+.order-summary-left div:hover {
+    background-color: #f8f8f8;
+    transform: scale(1.02);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.order-summary {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.order-summary h2 {
+    color: #FF5722;
+}
+
+.order-summary p {
+    margin: 5px 0;
+}
+
+.address-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.address-section img {
+    max-width: 150px;
+    height: auto;
+    margin-left: 20px;
+}
+
+#next-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+#next-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+/* Right Section (Image + Delivery Status) */
+.order-summary-right {
+    width: 35%; /* Makes the right section smaller */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.confirmation-image {
+    width: 100%;
+    text-align: center;
+}
+
+.confirmation-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.delivery-status {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.delivery-status h2 {
+    color: #FF5722;
+}
+
+.status-steps {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.status-step {
+    display: inline-block;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.status-step span {
+    display: block;
+    background-color: #ddd;
+    height: 8px;
+    width: 30px;
+    margin: 5px auto;
+    border-radius: 4px;
+}
+
+.status-step.active span {
+    background-color: #4CAF50;
+}
+
+.status-text {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <!-- Container div to hold the order summary and right section (image + delivery status) -->
+        <div class="order-summary-container">
+            <!-- Order Summary Section on the Left -->
+            <div class="order-summary-left">
+                <h1>Order Confirmation</h1>
+                <div id="order-details-content"></div>
+                <div class="order-summary">
+                    <h2>Summary:</h2>
+                    <p><strong>Order Summary</strong></p>
+                    <div id="order-summary-details"></div>
+                </div>
+                <div class="address-section">
+                    <h3>Delivery Address:</h3>
+                    <p id="address-details"></p>
+                </div>
+                <button id="next-button" onclick="window.location.href='index.html'">Go Back to Home</button>
+            </div>
+
+            <!-- Right Section (Image + Delivery Status) -->
+            <div class="order-summary-right">
+                <div class="confirmation-image">
+                    <img src="confirm.png" alt="Order Image" />
+                </div>
+                <div class="delivery-status">
+                    <h2>Delivery Status</h2>
+                    <div class="status-steps">
+                        <div class="status-step active">
+                            <span></span>
+                            <p class="status-text">Order Received</p>
+                        </div>
+                        <div class="status-step active">
+                            <span></span>
+                            <p class="status-text">In Process</p>
+                        </div>
+                        <div class="status-step">
+                            <span></span>
+                            <p class="status-text">Out for Delivery</p>
+                        </div>
+                        <div class="status-step">
+                            <span></span>
+                            <p class="status-text">Delivered</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener("load", function () {
+            const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
+            const orderContainer = document.getElementById("order-details-content");
+            const orderSummaryContainer = document.getElementById("order-summary-details");
+            const addressContainer = document.getElementById("address-details");
+
+            if (orderDetails) {
+                const cart = orderDetails.cart;
+                const address = orderDetails.address;
+                let totalAmount = 0;
+
+                // Display cart items
+                cart.forEach(item => {
+                    const itemDiv = document.createElement("div");
+                    itemDiv.innerHTML = `${item.name} - ₹${item.price} x ${item.quantity} = ₹${item.total}`;
+                    orderContainer.appendChild(itemDiv);
+                    totalAmount += item.total;
+                });
+
+                // Show total amount
+                const totalDiv = document.createElement("div");
+                totalDiv.innerHTML = `<h3>Total: ₹${totalAmount}</h3>`;
+                orderContainer.appendChild(totalDiv);
+
+                // Show order summary
+                cart.forEach(item => {
+                    const itemSummary = document.createElement("p");
+                    itemSummary.innerHTML = `${item.name} - ₹${item.price} x ${item.quantity}`;
+                    orderSummaryContainer.appendChild(itemSummary);
+                });
+
+                // Display the delivery address
+                addressContainer.innerHTML = address;
+
+                // Clear the local storage after displaying the order
+                localStorage.removeItem("cart");
+                localStorage.removeItem("orderDetails");
+            }
+        });
+    </script>
+</body>
+</html>
+
+</body>
+</html>
+

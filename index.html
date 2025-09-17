@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering Site</title>
+    <link rel="icon" href="feastifylogo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="cart.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="feastifylogo.png" alt="logo">
+            <h1>Feastify</h1>
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
+        <nav>
+            <ul>
+                <input type="text" id="location" name="location" placeholder="Enter your location">
+                <li><a href="#home"><span class="material-symbols-outlined">home</span> Home</a></li>
+                <li><a href="menu.html"><span class="material-symbols-outlined">menu_book</span> Menu</a></li>
+                <li><a href="cart.html"><span class="material-symbols-outlined">shopping_cart</span>Cart(<span
+                            id="cart-count">0</span>)</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a data-bs-toggle="offcanvas" href="#offcanvas2" role="button" aria-controls="offcanvasExample"><svg
+                            class="ppAwf" viewBox="6 -1 12 25" height="19" width="19" fill="white">
+                            <path
+                                d="M21.966903,13.2244898 C22.0156989,12.8231523 22.0408163,12.4145094 22.0408163,12 C22.0408163,11.8357822 22.036874,11.6724851 22.029079,11.5101984 L17.8574333,11.5102041 C17.8707569,11.6717062 17.877551,11.8350597 17.877551,12 C17.877551,12.4199029 17.8335181,12.8295214 17.749818,13.2244898 L21.966903,13.2244898 Z M21.5255943,15.1836735 L16.9414724,15.1836735 C15.8950289,16.8045422 14.0728218,17.877551 12,17.877551 C9.92717823,17.877551 8.1049711,16.8045422 7.05852762,15.1836735 L2.47440565,15.1836735 C3.80564362,19.168549 7.56739481,22.0408163 12,22.0408163 C16.4326052,22.0408163 20.1943564,19.168549 21.5255943,15.1836735 Z M21.7400381,9.55102041 C20.6468384,5.18931674 16.7006382,1.95918367 12,1.95918367 C7.2993618,1.95918367 3.3531616,5.18931674 2.25996187,9.55102041 L6.6553883,9.55102041 C7.58404845,7.5276442 9.62792376,6.12244898 12,6.12244898 C14.3720762,6.12244898 16.4159515,7.5276442 17.3446117,9.55102041 L21.7400381,9.55102041 Z M2.03309705,13.2244898 L6.25018203,13.2244898 C6.16648186,12.8295214 6.12244898,12.4199029 6.12244898,12 C6.12244898,11.8350597 6.1292431,11.6717062 6.14256675,11.5102041 L1.97092075,11.5102041 C1.96312595,11.6724851 1.95918367,11.8357822 1.95918367,12 C1.95918367,12.4145094 1.98430112,12.8231523 2.03309705,13.2244898 Z M12,24 C5.372583,24 0,18.627417 0,12 C0,5.372583 5.372583,0 12,0 C18.627417,0 24,5.372583 24,12 C24,18.627417 18.627417,24 12,24 Z M12,15.9183673 C14.1640545,15.9183673 15.9183673,14.1640545 15.9183673,12 C15.9183673,9.83594547 14.1640545,8.08163265 12,8.08163265 C9.83594547,8.08163265 8.08163265,9.83594547 8.08163265,12 C8.08163265,14.1640545 9.83594547,15.9183673 12,15.9183673 Z">
+                            </path>
+                        </svg> Contact Us</a></li>
+                <li id="user-menu"><a data-bs-toggle="offcanvas" href="#offcanvas1" role="button"
+                        aria-controls="offcanvasExample" id="logout-link"><span
+                            class="material-symbols-outlined">person</span>
+                        <span id="user-name">Sign In</span></a></li>
+                <script>
+                    function updateNavbar() {
+                        const userMenu = document.getElementById("user-menu");
+                        const userNameElement = document.getElementById("user-name");
+                        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+                        if (loggedInUser) {
+                            // Replace "Sign In" with the user's name
+                            userNameElement.textContent = loggedInUser.Name;
+
+                            // Optionally, add a dropdown for account options (e.g., logout)
+                            userMenu.innerHTML = `
+                                          <a href="#" id="logout-link">
+                                              <span class="material-symbols-outlined">person</span> 
+                                              ${loggedInUser.Name}
+                                          </a>
+                                      `;
+
+                            // Add logout functionality
+                            const logoutLink = document.getElementById("logout-link");
+                            logoutLink.addEventListener("click", function () {
+                                localStorage.removeItem("loggedInUser"); // Clear logged-in user data
+                                alert("You have logged out.");
+                                location.reload(); // Reload page to reset navbar
+                            });
+                        }
+                    }
+
+                    // Call the function on page load
+                    window.onload = function () {
+                        updateNavbar();
+                    };
+                </script>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="hero-section">
+            <h2 class="animate__animated animate__zoomInUp ZoomInUp">Deliciousness Delivered to Your Door!</h2>
+            <p class="animate__animated animate__zoomInUp ZoomInUp">Order now and get 10% off on your first purchase!
+            </p>
+            <a href="menu.html" class="btn animate__animated animate__zoomInUp ZoomInUp">Order Now</a>
+        </section>
+
+        <section id="offers" class="offers-section">
+            <h2 class="animate__animated animate__zoomInUp ZoomInUp"><span style="color: chocolate;">Today's Special
+                    Offers</span></h2>
+            <p class="animate__animated animate__zoomInUp ZoomInUp">Limited-Time Specials to Tempt Your Taste Buds!</p>
+            <div class="offers">
+                <div class="offer-item" data-id="17" data-name="Thali Offer" data-price="299">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG1CBsAwXRzqHxLpwNMf7hWMDzoVSlTHeuQw&s"
+                        alt="Thali Offer">
+                    <h3>Thali Combo</h3>
+                    <p>Only ₹299 - Includes 2 Curries, Rice, Naan, and Dessert</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                    <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                </div>
+                <div class="offer-item" data-id="18" data-name="Family Biryani Pack" data-price="699">
+                    <img src="https://static.toiimg.com/thumb/54308405.cms?imgsize=510571&width=800&height=800"
+                        alt="Biryani Offer">
+                    <h3>Family Biryani Pack</h3>
+                    <p>₹699 - Serves 4 people, includes Raita and Salad</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                    <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                </div>
+                <div class="offer-item" data-id="19" data-name="Chaat Festival" data-price="99">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxA8bs12HItpUo1HJhy_VeoSWUdLLr0iyp5g&s"
+                        alt="Chaat Offer">
+                    <h3>Chaat Festival</h3>
+                    <p>Flat 20% off on all Chaat items - Pani Puri, Dahi Puri, and more!</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                    <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="best" class="best-section">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <h2 class="animate__animated animate__fadeInUp FadeInUp">Our Best-Sellers</h2>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="container5">
+                            <div class="card animate__animated animate__rollIn" data-id="20" data-name="Biryani"
+                                data-price="699">
+                                <img src="https://c.ndtvimg.com/2022-04/fq5cs53_biryani-doubletree-by-hilton_625x300_12_April_22.jpg"
+                                    alt="">
+                                <h3>Biryani</h3>
+                                <p>₹699</p>
+                                <button class="add-to-cart">Add to Cart</button>
+                                <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                            </div>
+                            <div class="card animate__animated animate__rollIn" data-id="21" data-name="Chaat"
+                                data-price="59">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxA8bs12HItpUo1HJhy_VeoSWUdLLr0iyp5g&s"
+                                    alt="">
+                                <h3>Chaat</h3>
+                                <p>₹59</p>
+                                <button class="add-to-cart">Add to Cart</button>
+                                <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                            </div>
+                            <div class="card animate__animated animate__rollIn" data-id="22" data-name="Paneer Tikka"
+                                data-price="249">
+                                <img src="paneer.jpeg" alt="">
+                                <h3>Paneer Tikka</h3>
+                                <p>₹249</p>
+                                <button class="add-to-cart">Add to Cart</button>
+                                <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="container5">
+                            <div class="card animate__animated animate__rollIn" data-id="23" data-name="Masala Dosa"
+                                data-price="149">
+                                <img src="masala dosa.jpeg" alt="">
+                                <h3>Masala Dosa</h3>
+                                <p>₹149</p>
+                                <button class="add-to-cart">Add to Cart</button>
+                                <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                            </div>
+                            <div class="card animate__animated animate__rollIn" data-id="24" data-name="Gravy Chaap"
+                                data-price="199">
+                                <img src="download.jpeg" alt="">
+                                <h3>Gravy Chaap</h3>
+                                <p>₹199</p>
+                                <button class="add-to-cart">Add to Cart</button>
+                                <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                            </div>
+                            <div class="card animate__animated animate__rollIn" data-id="25" data-name="Chole Bhature"
+                                data-price="149">
+                                <img src="download (1).jpeg" alt="">
+                                <h3>Chole Bhature</h3>
+                                <p>₹149</p>
+                                <button class="add-to-cart">Add to Cart</button>
+                                <button class="add-to-favourites"><i class="fa fa-heart"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="prev">
+                    <svg class="carousel-control-prev-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M11.854 1.146a.5.5 0 0 1 0 .708L6.207 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="next">
+                    <svg class="carousel-control-next-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.146 1.146a.5.5 0 0 0 0 .708L9.793 8 4.146 13.646a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708l-6-6a.5.5 0 0 0-.708 0z" />
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <div class="testsec">
+            <div class="heading">
+                <h3>Testimonials</h3>
+            </div>
+            <div class="wrapper">
+                <div class="container">
+                    <input type="radio" name="testimonial" id="t1" checked>
+                    <label for="t1" class="card">
+                        <i class="fa fa-quote-left quote-icon"></i>
+                        <div class="description">
+                            <p>
+                                "Exceptional quality and attention to detail! The staff made me feel special, and
+                                the food was nothing short of amazing. A must-visit spot!"
+                            </p>
+                            <h4>Ananya Sharma</h4>
+                            <div class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+
+                        </div>
+                    </label>
+                    <input type="radio" name="testimonial" id="t2">
+                    <label for="t2" class="card">
+                        <i class="fa fa-quote-left quote-icon"></i>
+                        <div class="description">
+                            <p>
+                                "Absolutely loved the service and the food! The atmosphere was warm and welcoming,
+                                and every bite was a burst of flavor. Will definitely be back soon."
+                            </p>
+                            <h4>Rohan Gupta</h4>
+                            <div class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                    </label>
+                    <input type="radio" name="testimonial" id="t3">
+                    <label for="t3" class="card">
+                        <i class="fa fa-quote-left quote-icon"></i>
+                        <div class="description">
+
+                            <p>
+                                "The best dining experience I've ever had! The dishes were fresh, flavorful, and
+                                beautifully presented. Highly recommend it to anyone looking for a culinary
+                                delight."
+                            </p>
+                            <h4>Meera Iyer</h4>
+                            <div class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <section class="why">
+            <h2>Why Choose Feastify?</h2>
+            <div class="container6">
+                <div class="animation-item">
+                    <img src="https://png.pngtree.com/png-vector/20230728/ourmid/pngtree-calories-clipart-cartoonstyle-illustration-showing-a-variety-of-fast-food-items-vector-png-image_6800962.png"
+                        alt="">
+                    <h3>Variety of Cuisines</h3>
+                    <p>Discover new flavors or enjoy your go-to favorites—all made to satisfy your cravings.</p>
+                </div>
+                <div class="animation-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuzB4KNDnQJYbeNCiZVoy6Ps3Ezor1lXiVkQ&s"
+                        alt="">
+                    <h3>Fresh and Fast</h3>
+                    <p>More than a name, we commit to quick, fresh service.</p>
+                </div>
+                <div class="animation-item">
+                    <img src="https://cdn.prod.website-files.com/661cabfe491ead7e40ea563c/661cceff9911086b9044d821_food-safety%20icon.png"
+                        alt="">
+                    <h3>Quality Ingredients</h3>
+                    <p>Quality is our top priority, so you can always expect wholesome, delicious food delivered to your
+                        door.</p>
+                </div>
+                <div class="animation-item">
+                    <img src="https://img.lovepik.com/element/45012/6199.png_860.png" alt="">
+                    <h3>Fast & Reliable Delivery</h3>
+                    <p>Our drivers work around the clock to make sure you enjoy a seamless and reliable experience every
+                        time.</p>
+                </div>
+                <div class="animation-item">
+                    <img src="https://cdn.prod.website-files.com/661cabfe491ead7e40ea563c/661cceff4907e55afedda051_happy-client%201.png"
+                        alt="">
+                    <h3>Customer-Centric Experience</h3>
+                    <p>Satisfaction priority. Welcoming space to enjoy, excel guided by feedback.</p>
+                </div>
+                <div class="animation-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOq9jCIZLTV9PhvgX_Y-oj6MUjba9Vm37q2g&s"
+                        alt="">
+                    <h3>Special Offers & Rewards</h3>
+                    <p>With our loyalty program, get rewarded for every order!</p>
+                </div>
+            </div>
+        </section>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const items = document.querySelectorAll(".animation-item");
+
+                const observerOptions = {
+                    root: null, // Use the viewport as the root
+                    threshold: 0.5, // Trigger when 50% of the item is visible
+                };
+
+                const observerCallback = (entries, observer) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("visible");
+                        } else {
+                            entry.target.classList.remove("visible"); // Revert the effect when it's no longer in view
+                        }
+                    });
+                };
+
+                const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+                // Observe each animation-item
+                items.forEach((item) => observer.observe(item));
+            });
+        </script>
+
+        <!-- Contact Section -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas2" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"><i
+                        class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="offcanvas-body">
+                <section id="contact" class="contact-section">
+                    <h2>Contact Us</h2>
+                    <form action="#">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                        <br><br>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <br><br>
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+                        <br><br>
+                        <button type="submit">Send Message</button>
+                    </form>
+                </section>
+
+                <footer>
+                    <p>&copy; 2024 Feastify. All Rights Reserved.</p>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Sign In -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas1" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"><i
+                        class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="sign-in-section">
+                    <h2>Sign In</h2>
+                    <form id="loginForm" onsubmit="login(event)">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="email" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit">Sign in</button>
+                    </form>
+                    <p>Don't have an account? <a href="sign-up.html">Create one</a></p>
+                </div>
+            </div>
+        </div>
+        <script>
+            function login(event) {
+                event.preventDefault();  // Prevent the form from submitting normally
+
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;  // Corrected ID
+
+                if (username && password) {
+                    const users = JSON.parse(localStorage.getItem("users")) || [];
+                    const user = users.find(user => user.Email === username && user.Password === password);
+
+                    if (user) {
+                        alert(`Welcome back, ${user.Name}!`);
+                        localStorage.setItem("loggedInUser", JSON.stringify(user));
+                        window.location.href = "index.html";  // Redirect after login
+                    } else {
+                        alert("Invalid email or password. Please try again.");
+                    }
+                } else {
+                    alert("Please enter both email and password.");
+                }
+            }
+
+            // window.onload = function () {
+            //     const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            //     if (loggedInUser) {
+            //         window.location.href = "index.html";  // Redirect to homepage if already logged in
+            //     }
+            // };
+        </script>
+
+    </main>
+    <br>
+    <!-- Footer -->
+    <footer>
+        <div class="row primary">
+            <div class="column about">
+                <h3>Feastify</h3>
+                <p>
+                    At Feastify, we are passionate about bringing you the finest flavors and a
+                    delightful dining experience. From fresh ingredients to carefully crafted recipes,
+                    we aim to make every meal special. Thank you for choosing us as your trusted culinary partner.
+                    Follow us on our journey to create memories one bite at a time
+                </p>
+            </div>
+            <div class="column links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li>
+                        <a href="#faq">F.A.Q</a>
+                    </li>
+                    <li>
+                        <a href="#cookies-policy">Cookies Policy</a>
+                    </li>
+                    <li>
+                        <a href="#terms-of-services">Terms Of Service</a>
+                    </li>
+                    <li>
+                        <a href="#support">Support</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="column subscribe">
+                <h3>Subscribe</h3>
+                <div>
+                    <input type="email" placeholder="Your email id here" />
+                    <button>Subscribe</button>
+                </div>
+                <div class="social">
+                    <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook-square"></i></a>
+                    <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram-square"></i></a>
+                    <a href="https://www.twitter.com/"><i class="fa-brands fa-twitter-square"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row secondary">
+            <div>
+                <p>
+                    <i class="fas fa-phone-alt"></i>
+                </p>
+                <p>+91 9812345674</p>
+            </div>
+            <div>
+                <p><i class="fas fa-envelope"></i></p>
+                <p>feastify@gmail.com</p>
+            </div>
+            <div>
+                <p><i class="fas fa-map-marker-alt"></i></p>
+                <p>1234 Business Centre,New Delhi</p>
+            </div>
+        </div>
+        <div class="row copyright">
+            <p>Copyright &copy; Feastify | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize favourites array from localStorage (if any)
+        let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+
+        // Event listener for "Add to Favourites" buttons
+        document.querySelectorAll(".add-to-favourites").forEach((button) => {
+            button.addEventListener("click", function () {
+                const menuItem = this.closest(".box, .offer-item, .card"); // Find the parent menu item
+                const itemId = menuItem.getAttribute("data-id");
+                const itemName = menuItem.getAttribute("data-name");
+                const itemPrice = menuItem.getAttribute("data-price");
+                const itemImage = menuItem.querySelector("img").getAttribute("src"); // Get image URL
+
+                // Check if item is already in favourites
+                const isFavourite = favourites.some((item) => item.id === itemId);
+                if (!isFavourite) {
+                    // Add item to favourites array
+                    favourites.push({ id: itemId, name: itemName, price: itemPrice, image: itemImage });
+
+                    // Save updated favourites array to localStorage
+                    localStorage.setItem("favourites", JSON.stringify(favourites));
+
+                    // Change the heart icon to filled (❤️) to show it's added to favourites
+                    this.innerHTML = '<i class="fa fa-heart" style="color: red;"></i>';
+
+                    // Optionally, show a confirmation message
+                    alert(`${itemName} added to favourites!`);
+                } else {
+                    alert("This item is already in your favourites!");
+                }
+            });
+        });
+
+        // Initialize all hearts with an empty state (❤️ or ♥)
+        document.querySelectorAll(".add-to-favourites").forEach((button) => {
+            const menuItem = button.closest(".offer-item");
+            const itemId = menuItem.getAttribute("data-id");
+
+            // Check if item is already in favourites
+            if (favourites.some((item) => item.id === itemId)) {
+                button.innerHTML = '<i class="fa fa-heart" style="color: red;"></i>'; // Filled heart
+            } else {
+                button.innerHTML = '<i class="fa fa-heart"></i>'; // Empty heart
+            }
+        });
+
+        // Display Favourited Items (Optional: In case you want a separate section for favourites)
+        function displayFavourites() {
+            const favouritesContainer = document.getElementById("favourites-container");
+            favouritesContainer.innerHTML = ""; // Clear the existing favourites
+
+            favourites.forEach((item) => {
+                const favouriteItem = document.createElement("div");
+                favouriteItem.classList.add("favourite-item");
+                favouriteItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="favourite-image" />
+            <h3>${item.name}</h3>
+            <p>₹${item.price}</p>
+            <button class="remove-from-favourites" data-id="${item.id}">Remove from Favourites</button>
+        `;
+                favouritesContainer.appendChild(favouriteItem);
+            });
+
+            // Add event listeners for remove buttons
+            document.querySelectorAll(".remove-from-favourites").forEach((button) => {
+                button.addEventListener("click", function () {
+                    const itemId = this.getAttribute("data-id");
+                    favourites = favourites.filter((item) => item.id !== itemId); // Remove item from favourites
+                    localStorage.setItem("favourites", JSON.stringify(favourites)); // Update localStorage
+                    displayFavourites(); // Re-render favourites
+                });
+            });
+        }
+
+        // Call displayFavourites() when the page loads to show favourites
+        displayFavourites();
+
+    </script>
+</body>
+
+</html>

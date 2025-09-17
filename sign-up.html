@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="icon" href="feastifylogo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@500&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Container styles */
+        .containernew {
+            background-color: #fff9e6;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* Input fields styles */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #ff8c00;
+        }
+
+        /* Terms & Conditions styles */
+        .terms {
+            font-size: 14px;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+
+        .terms input {
+            margin-right: 10px;
+        }
+
+        /* Button styles */
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #ff8c00;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .signup-btn:hover {
+            background-color: #e07a00;
+        }
+
+        /* Login link styles */
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Media query for responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+                max-width: 100%;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="containernew">
+        <form id="signup-form">
+            <h2>Create an Account</h2>
+
+            <div class="input-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email address">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Choose a strong password">
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the <a href="#">Terms & Conditions</a></label>
+            </div>
+
+            <button type="submit" class="signup-btn">Sign Up</button>
+
+            <div class="login-link">
+                <p>Already have an account? <a href="index.html" target="_blank">Login here</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function (event) {
+            event.preventDefault();  // Prevent form from submitting to server
+
+            // Get values from input fields
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const terms = document.getElementById('terms').checked;  // Corrected
+
+            if (name && email && password && terms) {
+                let users = JSON.parse(localStorage.getItem("users")) || [];
+
+                const userExists = users.some(user => user.Email === email);
+                if (userExists) {
+                    alert("This email is already registered. Please log in.");
+                    return;
+                }
+
+                const newUser = { Name: name, Email: email, Password: password };
+                users.push(newUser);
+                localStorage.setItem("users", JSON.stringify(users));
+
+                alert("Account created successfully! You can now log in.");
+                console.log("New User Added:", newUser);
+                console.table(users);
+
+                // Clear form after submission (Optional)
+                document.getElementById('signup-form').reset();
+
+                window.location.href = "index.html";  // Redirect after signup
+            } else {
+                alert("Please fill out all fields and accept the terms and conditions.");
+            }
+        });
+    </script>
+    
+</body>
+
+</html>
